@@ -8,6 +8,8 @@ let deck = Array.from(cards);
 let matchingCardsObject = document.getElementsByClassName("match");
 let matchingCardsArray = Array.from(matchingCardsObject);
 let hasGameStartedYet = false;
+let varModal = document.getElementsByClassName("modal");
+
 
 // TIMER VARIABLES
 let varMinutes = 0;
@@ -167,6 +169,8 @@ function cardClicked(e) {
   // IF ALL ELEMENTS ARE SAME AND IF TOTAL NO OF SAME ELEMS IS 16 SOMETHING LIKE THAT
   if (matchingCardsArray.length === 16) {
     // MODAL - SHOW STAR RATING IN MODAL
+    
+    // varModal.style.cssText = 'display: flex;';
     
     // STAR RATING
     // 18 moves - 3 stars
