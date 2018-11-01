@@ -8,7 +8,10 @@ let deck = Array.from(cards);
 let matchingCardsObject = document.getElementsByClassName("match");
 let matchingCardsArray = Array.from(matchingCardsObject);
 let hasGameStartedYet = false;
-let varModal = document.getElementsByClassName("modal");
+let hasPlayerWon = false;
+let starRating = 0;
+// let afterModalStartTimer = false;
+let varModal = document.getElementsByClassName("modal")[0];
 
 
 // TIMER VARIABLES
@@ -64,10 +67,13 @@ let startTimer = function() {
 
 function timerFunc() {
   let clearId = setInterval(function() {
-    if (shouldTimerStop) {
+    if (shouldTimerStop && hasPlayerWon) {
       clearInterval(clearId);
       shouldTimerStop = false;
-    } else {
+      hasPlayerWon = false;
+    } 
+    
+    else {
       startTimer();
     }
   }, 1000);
@@ -168,15 +174,73 @@ function cardClicked(e) {
 
   // IF ALL ELEMENTS ARE SAME AND IF TOTAL NO OF SAME ELEMS IS 16 SOMETHING LIKE THAT
   if (matchingCardsArray.length === 16) {
+
+    console.log(clickCounter);
+    console.log(starRating);
+
+    // STAR RATING
+    
+    function starRatingFunc() {
+      if(clickCounter < 19) {
+        starRating = 3;
+        return starRating;
+      }
+      
+      else if(clickCounter > 18 && clickCounter < 26) {
+        starRating = 2;
+        return starRating;
+      }
+
+      else if(clickCounter > 25) {
+        starRating = 1;
+        return starRating;
+      }
+
+      // DO SOMETHING ABOUT THE TIMER FUNC REST WORKS FINE MAKE TIMER RUN AGAIN AFTER PLAYER WINS
+    }
+    starRatingFunc();
+
+
+
+
+
+    // if(clickCounter < 19) {
+    //   starRating = 3;
+    //   return starRating;
+    // }
+    
+    // else if(clickCounter > 18 && starRating < 26) {
+    //   starRating = 2;
+    //   return starRating;
+    // }
+
+    // else if(clickCounter > 25) {
+    //   starRating = 1;
+    //   return starRating;
+    // }
+    
     // MODAL - SHOW STAR RATING IN MODAL
     
-    // varModal.style.cssText = 'display: flex;';
+    hasPlayerWon = true;
+    shouldTimerStop = true;
+    varModal.style.cssText = 'display: flex;';
+    document.getElementById("modal-para").textContent = 
+    `Congratulations! You finished in ${numOfSeconds} seconds and ${clickCounter} moves. You get a ${starRating} star rating!`;
+    document.getElementsByClassName("close")[0].addEventListener("click", function() {
+      varModal.style.cssText = 'display: none;';
+    });
+
+    // afterModalStartTimer = true;
     
     // STAR RATING
     // 18 moves - 3 stars
     // 19-25 moves - 2 stars
     // 25+ moves - 1 star
     console.log("Congrats!");
+
+
+
+
   }
 }
 
@@ -189,10 +253,12 @@ function shuffleFunc(e) {
   //  REMOVE ANIMATE ROTATE 360deg
   document.querySelector(".restart").classList.remove("rotate");
 
-  //  ADD ANIMATE ROTATE 360deg
-  document.querySelector(".restart").classList.add("rotate");
-
   if (e.target.parentElement.classList.contains("restart")) {
+
+    //  ADD ANIMATE ROTATE 360deg
+    document.querySelector(".restart").classList.add("rotate");
+
+
     //  TO REMOVE ALL THE CARDS
     while (ul.lastChild) {
       ul.removeChild(ul.lastChild);
@@ -203,6 +269,7 @@ function shuffleFunc(e) {
 
     // RESET TIMER FUNCTION
       hasGameStartedYet = false;
+      hasPlayerWon = true;
       shouldTimerStop = true;
       varTimer.textContent = "00 : 00";
       varSeconds = 0;
@@ -231,3 +298,6 @@ function shuffleFunc(e) {
 
   // REMOVE SHOW CLASS FROM ALL CARDS
 }
+let moodal = document.getElementById("modal-btn");
+
+moodal.addEventListener("click", shuffleFunc);
