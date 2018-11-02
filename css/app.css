@@ -99,7 +99,7 @@ html {
   }
   
   .score-panel .stars {
-    padding: 0;
+    padding: 0 10px;
     display: inline-block;
     margin: 0 5px 0 0;
   }
@@ -117,9 +117,18 @@ html {
     float: right;
     cursor: pointer;
   }
+
+  .fa-star {
+    color: #ff7200;
+    /* border: 1px solid gray; */
+  }
+
+  .hide-star {
+    display: none;
+  }
   
   .rotate {
-    transition: all 1000ms ease-in-out;
+    transition: all 800ms ease-in-out;
     transform: rotate(360deg);
   }
   
@@ -153,6 +162,10 @@ html {
     width: 80%; /* Could be more or less, depending on screen size */
     position: relative;
   }
+
+  #congrats {
+    text-align: center;
+  }
   
   /* The Close Button */
   .close {
@@ -172,5 +185,6 @@ html {
   }
   
   .show-modal {
+    display: flex;
   }
   
