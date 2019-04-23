@@ -25,7 +25,6 @@ modalBtn.addEventListener("click", function() {
   timerFunc();
 });
 
-
 // TIMER VARIABLES
 let varMinutes = 0;
 let varSeconds = 0;
@@ -74,7 +73,6 @@ let startTimer = function() {
     varMinutes++;
     varSeconds = 0;
   }
-  
 };
 
 function timerFunc() {
@@ -84,16 +82,12 @@ function timerFunc() {
       shouldTimerStop = false;
       hasPlayerWon = false;
       hasGameStartedYet = false;
-    } 
-    
-    else {
+    } else {
       startTimer();
       hasGameStartedYet = true;
     }
   }, 1000);
-  
 }
-
 
 /*
  * set up the event listener for a card. If a card is clicked:
@@ -108,54 +102,41 @@ function timerFunc() {
 
 ul.addEventListener("click", cardClicked);
 
-
 let openCardsArray = [];
 
 console.log(openCardsArray);
 
-
 function cardClicked(e) {
-
   console.log(hasGameStartedYet);
   // hasGameStartedYet = true;
 
   function openCard() {
-
     if (e.target.classList.contains("card")) {
-
       // changed to true from false
-      if(hasGameStartedYet === false) {
-
+      if (hasGameStartedYet === false) {
         timerFunc();
         hasGameStartedYet = true;
         //  SO THAT timerFunc CAN RUN clearInterval AND TIMER DOESN'T KEEP RUNNING ON RESTART
       }
 
-
-
-
-
       // UPDATE NUMBER OF MOVES/CLICKS
 
       let moveCounterFunc = function() {
         clickCounter++;
-        
-        function removeStar() {
 
+        function removeStar() {
           if (clickCounter < 19) {
             starRating = 3;
           }
-  
-          if(clickCounter > 18 && clickCounter < 26) {
+
+          if (clickCounter > 18 && clickCounter < 26) {
             starRating = 2;
             for (i = 0; i < 3; i++) {
               if (i > 1) {
                 starsArray[i].classList.add("hide-star");
               }
             }
-          }
-        
-          else if(clickCounter > 25) {
+          } else if (clickCounter > 25) {
             starRating = 1;
             for (i = 0; i < 3; i++) {
               if (i > 0) {
@@ -163,12 +144,8 @@ function cardClicked(e) {
               }
             }
           }
-          
         }
         removeStar();
-
-
-
 
         document.getElementById("num-of-moves").textContent = clickCounter;
 
@@ -228,43 +205,42 @@ function cardClicked(e) {
 
   // IF ALL ELEMENTS ARE SAME AND IF TOTAL NO OF SAME ELEMS IS 16 SOMETHING LIKE THAT
   if (matchingCardsArray.length === 16) {
-
     // MODAL - SHOW STAR RATING IN MODAL
 
     hasPlayerWon = true;
     shouldTimerStop = true;
     // timerFunc();
     varModal.classList.add("show-modal");
-    document.getElementById("modal-para").textContent = 
-    `You finished in ${varMinutes} minutes ${varSeconds} seconds and ${clickCounter} moves. You get a ${starRating} star rating!`;
-    document.getElementsByClassName("close")[0].addEventListener("click", function() {
-      varModal.classList.remove("show-modal");
-    });
+    document.getElementById(
+      "modal-para"
+    ).textContent = `You finished in ${varMinutes} minutes ${varSeconds} seconds and ${clickCounter} moves. You get a ${starRating} star rating!`;
+    document
+      .getElementsByClassName("close")[0]
+      .addEventListener("click", function() {
+        varModal.classList.remove("show-modal");
+      });
 
     console.log("Congrats!");
-
   }
 }
 
 function resetGame() {
-
   console.log(hasGameStartedYet);
 
   //  ADD ANIMATE ROTATE 360deg
-document.querySelector(".restart").classList.add("rotate");
+  document.querySelector(".restart").classList.add("rotate");
 
-hasGameStartedYet = false;
+  hasGameStartedYet = false;
 
+  //  TO REMOVE ALL THE CARDS
+  while (ul.lastChild) {
+    ul.removeChild(ul.lastChild);
+  }
 
-//  TO REMOVE ALL THE CARDS
-while (ul.lastChild) {
-  ul.removeChild(ul.lastChild);
-}
+  //  REMOVES ALL OPEN CARDS FROM THE ARRAY FROM PREVIOUS GAME
+  openCardsArray = [];
 
-//  REMOVES ALL OPEN CARDS FROM THE ARRAY FROM PREVIOUS GAME
-openCardsArray = [];
-
-// RESET TIMER FUNCTION
+  // RESET TIMER FUNCTION
   // hasGameStartedYet = false; I THINK I DONT NEED THIS AGAIN SINCE I ADDED IT TO TIMER FUNCTION
   hasPlayerWon = true;
   shouldTimerStop = true;
@@ -277,27 +253,25 @@ openCardsArray = [];
 
   // RESET STAR RATING
   starRating = 0;
-  for(i=0; i<3; i++) {
+  for (i = 0; i < 3; i++) {
     starsArray[i].classList.remove("hide-star");
   }
 
+  //  SET CLICK COUNTER TO 0
+  document.getElementById("num-of-moves").textContent = 0;
+  clickCounter = 0;
 
-//  SET CLICK COUNTER TO 0
-document.getElementById("num-of-moves").textContent = 0;
-clickCounter = 0;
+  //  VARIABLE TO HOLD SHUFFLED ARRAY
+  let newShuffledArray = shuffle(deck);
 
-//  VARIABLE TO HOLD SHUFFLED ARRAY
-let newShuffledArray = shuffle(deck);
+  //  TO ADD THE SHUFFLED ARRAY ELEMENTS BACK TO THE PAGE
+  for (let i = 0; i < newShuffledArray.length; i++) {
+    newShuffledArray[i].classList.remove("match", "show");
+    ul.appendChild(newShuffledArray[i]);
+  }
 
-//  TO ADD THE SHUFFLED ARRAY ELEMENTS BACK TO THE PAGE
-for (let i = 0; i < newShuffledArray.length; i++) {
-  newShuffledArray[i].classList.remove("match", "show");
-  ul.appendChild(newShuffledArray[i]);
-}
-
-// TO SET MATCHING CARDS ARRAY LENGTH TO 0
-matchingCardsArray.length = 0;
-
+  // TO SET MATCHING CARDS ARRAY LENGTH TO 0
+  matchingCardsArray.length = 0;
 }
 
 // MAKE THE SHUFFLE FUNCTION RUN ON EACH REFRESH OR PAGE LOAD
@@ -310,9 +284,6 @@ function shuffleFunc(e) {
   document.querySelector(".restart").classList.remove("rotate");
 
   if (e.target.parentElement.classList.contains("restart")) {
-    
     resetGame();
-
   }
-
 }
